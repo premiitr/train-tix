@@ -28,9 +28,9 @@ TrainTix is a full-stack web application for booking train seats with smart allo
 
 ## 🛠 Tech Stack
 
-| Frontend   | Backend        | Database   | State Management | Deployment |
-|------------|----------------|------------|------------------|------------|
-| React.js   | Node.js + Express | PostgreSQL | Redux Toolkit     | Vercel + Railway |
+| Frontend   | Backend        | Database   | State Management |
+|------------|----------------|------------|------------------|
+| React.js   | Node.js + Express | PostgreSQL | Redux Toolkit  |
 
 ---
 
@@ -118,4 +118,3 @@ traintix/
 │   └── db.js 
 ```
 
---
