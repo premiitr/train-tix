@@ -142,7 +142,6 @@ DB_NAME=your_db_name
 
 ```bash
 Email: admin@traintix.com
-Password: any
 ```
 ## 🧑‍💻 Developed by
 
