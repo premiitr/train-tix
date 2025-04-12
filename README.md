@@ -103,18 +103,3 @@ Password: Prem@2030
 
 ---
 
-## 🏗 Folder Structure
-
-```
-traintix/
-├── frontend/           # React Frontend
-│   ├── components/
-│   ├── utils/
-│   └── redux/
-├── backend/           # Node.js Backend
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
-│   └── db.js 
-```
-
