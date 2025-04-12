@@ -15,7 +15,6 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.user_id = action.payload.user_id;
-      state.role = action.payload.role;
       state.bookedSeats = action.payload.bookedSeats || [];
       state.isLoggedIn = true;
     },

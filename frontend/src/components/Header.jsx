@@ -39,7 +39,7 @@ const Header = () => {
               </Link>
             ) : (
               <>
-                {user.name && <span className="px-3 py-2 text-gray-700 text-lg">{(user.name)}</span>}
+                {user.name && <span className="px-3 py-2 text-gray-700 text-lg">{getFirstName(user.name)}</span>}
                 <button onClick={handleLogout} className="px-3 py-2 rounded-md hover:bg-gray-100 transition text-lg">
                   Logout
                 </button>

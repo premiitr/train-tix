@@ -10,7 +10,7 @@ const Footer = () => {
                 </p>
                 <p className="text-sm">
                     For more information, visit our
-                    <a href="https://github.com/premiitr/react-projects/tree/main/fastfood" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline ml-1">
+                    <a href="https://github.com/premiitr/train-tix/tree/main" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline ml-1">
                         GitHub Repository
                     </a>
                 </p>

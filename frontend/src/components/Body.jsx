@@ -14,7 +14,7 @@ const Body = () => {
   const user = useSelector((state) => state.user);
   const allBookedSeats = useSelector((state) => state.allBookedSeats);
   const dispatch = useDispatch();
-
+  
   // Sync booked seats from backend
   useEffect(() => {
     const fetchSeats = async () => {
