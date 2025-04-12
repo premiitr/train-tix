@@ -144,3 +144,6 @@ DB_NAME=your_db_name
 Email: admin@traintix.com
 Password: any
 ```
+## 🧑‍💻 Developed by
+
+Prem | [GitHub @premiitr](https://github.com/premiitr)
