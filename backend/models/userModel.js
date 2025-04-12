@@ -2,7 +2,7 @@ const pool = require('../db');
 
 const createUser = async ({ name, email, password }) => {
   const result = await pool.query(
-    'INSERT INTO users (name, email, password, booked_seats) VALUES ($1, $2, $3, $4) RETURNING id',
+    'INSERT INTO users (name, email, password, booked_seats) VALUES ($1, $2, $3, $4) RETURNING id,name',
     [name, email, password, []]
   );
   return result.rows[0];
