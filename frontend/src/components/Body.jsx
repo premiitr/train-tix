@@ -9,9 +9,7 @@ import AdminPanel from './AdminPanel';
 import PromptBox from './PromptBox';
 
 const Body = () => {
-  const totalSeats = 80;
-  const seatsPerRow = 7;
-
+  const { totalSeats, seatsPerRow } = useSelector((state) => state.seatConfig);
   const [promptMsg, setPromptMsg] = useState("");
 
   const showPrompt = (msg) => {

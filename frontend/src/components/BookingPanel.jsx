@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
-import { removeUserBookedSeats,setCurrentSessionSeats,} from '../utils/userSlice';
+import { removeUserBookedSeats, setCurrentSessionSeats } from '../utils/userSlice';
 import { removeBookedSeats } from '../utils/bookedSeatsSlice';
 import PromptBox from './PromptBox';
 
@@ -23,8 +23,12 @@ const BookingPanel = ({ onBook }) => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
+  const seatConfig = useSelector((state) => state.seatConfig);
   const currseats = user.currentSessionSeats;
   const userbookedseats = user.bookedSeats;
+
+  // Define the price per seat (this can be adjusted or fetched from a config)
+  const seatPrice = seatConfig.seatPrice; // Example price per seat
 
   const handleShowBookedSeats = () => {
     user.isLoggedIn ? setShowModal(true) : navigate('/login');
@@ -66,6 +70,7 @@ const BookingPanel = ({ onBook }) => {
   const handleCancelAll = () => {
     handleCancelSeats([...userbookedseats]);
   };
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -108,6 +113,14 @@ const BookingPanel = ({ onBook }) => {
           className='w-full max-w-sm mx-auto py-2 bg-indigo-500 text-white text-sm font-semibold rounded-md hover:bg-indigo-600 transition'>
           View My Booked Seats
         </button>
+
+        {/* Total Price Box */}
+        {userbookedseats.length > 0 && (
+          <div className="w-[385px] mx-auto p-2 bg-green-100 gap-4 flex justify-center rounded-md">
+            <p className="text-lg font-semibold">Total Price : </p>
+            <p className="text-lg font-bold text-green-600">{userbookedseats.length * seatPrice} ₹</p>
+          </div>
+        )}
       </div>
 
       {/* 🔽 Cancel Modal */}
@@ -129,8 +142,7 @@ const BookingPanel = ({ onBook }) => {
                         selectedToCancel.includes(seat)
                           ? 'bg-red-300 border-red-600'
                           : 'bg-yellow-200 border-yellow-500'
-                      }`}
-                    >
+                      }`}>
                       {seat}
                     </span>
                   ))}
@@ -153,7 +165,7 @@ const BookingPanel = ({ onBook }) => {
                 </div>
 
                 <button
-                  onClick={() => {setSelectedToCancel([]);setShowModal(false);}}
+                  onClick={() => {setSelectedToCancel([]); setShowModal(false)}}
                   className="mt-4 w-full py-2 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition">
                   Close
                 </button>

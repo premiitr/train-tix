@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
 import bookedSeatsReducer from './bookedSeatsSlice';
+import configSeatsReducer from './configSeatsSlice';
 
 // ✅ Load state from localStorage
 const loadState = () => {
@@ -23,7 +24,8 @@ const saveState = (state) => {
 const appStore = configureStore({
   reducer: {
     user: userReducer,
-    allBookedSeats: bookedSeatsReducer
+    allBookedSeats: bookedSeatsReducer,
+    seatConfig: configSeatsReducer
   },
   preloadedState: loadState() 
 });

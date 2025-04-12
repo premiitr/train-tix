@@ -87,7 +87,7 @@ const Login = () => {
           setPromptMsg('success:Login successful');
           setTimeout(() => navigate('/'), 800);
         } else {
-          setPromptMsg(`error: ${data.error} Login failed`);
+          setPromptMsg(`error: ${data.error}`);
         }
       } catch (err) {
         console.error(err);
