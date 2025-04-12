@@ -3,9 +3,11 @@
 
 TrainTix is a full-stack web application for booking train seats with smart allocation logic and role-based access (Admin/Customer). Built as part of the Workwise SDE 1 Assignment.
 
----
 
-## 🧠 Features
+## 🚀 Live App
+Visit the deployed app: https://train-tix.onrender.com/
+
+## Features
 
 - 🔐 **User Authentication** (Login/Signup)
 - 🪑 **Smart Seat Booking**
@@ -93,6 +95,48 @@ CREATE TABLE users (
 | GET    | `/booked_seats`  | Get all booked seats      |
 
 ---
+
+
+---
+## 📁 File Structure
+```bash
+|traintix
+│
+├── /frontend                    # Frontend React app
+│   ├── /public                # Public assets (index.html, etc.)
+│   ├── /src                   # React source code
+│       ├── index.js               # Entry point for the app
+│   ├── package.json           # Frontend dependencies
+│
+├── /backend                   # Backend Node.js + Express app
+│   ├── /controllers           # API endpoint controllers
+│   ├── /models                # Database models
+│   ├── /routes                # API route definitions
+│   ├── server.js              # Main server file
+│   ├── package.json           # Backend dependencies
+│
+└── README.md                  # This file
+```
+---
+
+---
+## 🌍 Using Environment Variables
+### 1. Frontend Environment Variables
+In the frontend/.env file, you can define any necessary variables for the React app, such as the backend API URL:
+```bash
+REACT_APP_API_URL="https://<your-backned>.onrender.com" or your Backend API
+```
+### 2. Backend Environment Variables
+In the backend/.env file, you can define the following backend variables:
+```bash
+DB_HOST=your_host_name
+DB_USER=your_postgres_user
+DB_PASSWORD=your_postgres_password
+DB_NAME=your_db_name
+```
+### 3. Using Environment Variables
+* **Frontend** : Variables defined in ```frontend/.env``` will be available as ```process.env.REACT_APP_API_URL``` within your React code.
+* **Backend** : Variables defined in ```backend/.env``` can be accessed in your Node.js code using ```process.env.<VARIABLE_NAME>```.
 
 ## 👨‍💻 Admin Credentials
 
