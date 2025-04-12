@@ -3,6 +3,7 @@ import { API_URL } from '../utils/constants';
 import { useDispatch } from 'react-redux';
 import { login } from '../utils/userSlice';
 import { useNavigate } from 'react-router-dom';
+import PromptBox from './PromptBox';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -11,13 +12,12 @@ const Login = () => {
 
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
-  const [message, setMessage] = useState('');
+  const [promptMsg, setPromptMsg] = useState('');
 
-  // Close modal on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
-        navigate(-1); // Go back
+        navigate(-1);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -27,7 +27,7 @@ const Login = () => {
   const toggleForm = () => {
     setIsSignup(prev => !prev);
     setFormData({ name: '', email: '', password: '', confirmPassword: '' });
-    setMessage('');
+    setPromptMsg('');
   };
 
   const handleChange = (e) => {
@@ -40,11 +40,11 @@ const Login = () => {
 
     if (isSignup) {
       if (!name || !email || !password || !confirmPassword) {
-        setMessage('error:Please fill all fields');
+        setPromptMsg('error:Please fill all fields');
         return;
       }
       if (password !== confirmPassword) {
-        setMessage("error:Passwords don't match");
+        setPromptMsg("error:Passwords don't match");
         return;
       }
 
@@ -57,20 +57,20 @@ const Login = () => {
 
         const data = await res.json();
         if (res.ok) {
-          dispatch(login({name: data.name,email: data.email,user_id: data.user_id,bookedSeats: data.booked_seats}));          
-          setMessage('success:Registered successfully. Logging you in...');
-          setTimeout(() => navigate('/'), 500);
+          dispatch(login({ name: data.name, email: data.email, user_id: data.user_id, bookedSeats: data.booked_seats }));
+          setPromptMsg('Registered successfully. Logging you in...');
+          setTimeout(() => navigate('/'), 800);
         } else {
-          setMessage(`error:${data.error || 'Registration failed'}`);
+          setPromptMsg(`error: ${data.error} Registration failed`);
         }
       } catch (err) {
         console.error(err);
-        setMessage("error:Server error");
+        setPromptMsg("error: Server error");
       }
 
     } else {
       if (!email || !password) {
-        setMessage('error:Enter email and password');
+        setPromptMsg('error:Enter email and password');
         return;
       }
 
@@ -83,16 +83,15 @@ const Login = () => {
 
         const data = await res.json();
         if (res.ok) {
-          dispatch(login({name: data.name,email: email,user_id: data.user_id,bookedSeats: data.booked_seats}));
-          
-          setMessage('success:Login successful');
-          setTimeout(() => navigate('/'), 500);
+          dispatch(login({ name: data.name, email: email, user_id: data.user_id, bookedSeats: data.booked_seats }));
+          setPromptMsg('success:Login successful');
+          setTimeout(() => navigate('/'), 800);
         } else {
-          setMessage(`error:${data.error || 'Login failed'}`);
+          setPromptMsg(`error: ${data.error} Login failed`);
         }
       } catch (err) {
         console.error(err);
-        setMessage("error:Server error");
+        setPromptMsg("error: Server error");
       }
     }
   };
@@ -134,18 +133,6 @@ const Login = () => {
             {isSignup ? 'Sign Up' : 'Login'}
           </button>
         </form>
-        {message && (() => {
-          const [type, content] = message.split(':');
-          return (
-            <div className={`mt-4 text-sm px-4 py-2 rounded-md font-medium text-center border
-              ${type === 'success'
-                ? 'bg-green-100 text-green-800 border-green-300'
-                : 'bg-red-100 text-red-800 border-red-300'
-              }`}>
-              {content}
-            </div>
-          );
-        })()}
 
         <div className="mt-6 text-center text-sm text-gray-600">
           {isSignup ? (
@@ -165,6 +152,9 @@ const Login = () => {
           )}
         </div>
       </div>
+
+      {/* Prompt Message */}
+      {promptMsg && (<PromptBox message={promptMsg} onClose={() => setPromptMsg('')}/>)}
     </div>
   );
 };

@@ -4,11 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
 import { removeUserBookedSeats,setCurrentSessionSeats,} from '../utils/userSlice';
 import { removeBookedSeats } from '../utils/bookedSeatsSlice';
+import PromptBox from './PromptBox';
 
 const BookingPanel = ({ onBook }) => {
   const [seatCount, setSeatCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [selectedToCancel, setSelectedToCancel] = useState([]);
+
+  const [promptMsg, setPromptMsg] = useState("");
+  
+  const showPrompt = (msg) => {
+    setPromptMsg(msg);
+    setTimeout(() => setPromptMsg(""), 3000);
+  };
 
   const modalRef = useRef();
   const dispatch = useDispatch();
@@ -48,10 +56,10 @@ const BookingPanel = ({ onBook }) => {
         setSelectedToCancel([]);
         setShowModal(false);
       } else {
-        alert(data.error || 'Cancel failed');
+        showPrompt(`error:${data} Cancel Failed`)
       }
     } catch (err) {
-      alert('Server error while cancelling');
+      showPrompt("error:Server error while cancelling")
     }
   };
 
@@ -73,7 +81,7 @@ const BookingPanel = ({ onBook }) => {
     <div className='w-full h-auto my-3 lg:h-[570px] bg-white border border-gray-200 flex justify-center rounded-xl shadow-xl p-4'>
       <div className='w-full lg:w-8/12 flex flex-col justify-center gap-4'>
         <div className='text-2xl font-bold text-center text-indigo-700'>Book Your Seats</div>
-
+        {promptMsg && <PromptBox message={promptMsg} onClose={() => setPromptMsg("")} />}
         {currseats.length > 0 && (
           <div className="mx-auto px-2 py-2 flex gap-2 rounded-lg shadow-sm">
             <div className="flex flex-wrap gap-2">
@@ -87,25 +95,17 @@ const BookingPanel = ({ onBook }) => {
         )}
 
         <div className="flex w-full gap-2 max-w-sm mx-auto">
-          <input
-            type="number"
-            placeholder="Enter number of seats."
-            value={seatCount}
+          <input type="number" placeholder="Enter number of seats." value={seatCount}
             onChange={(e) => setSeatCount(e.target.value)}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
-          />
-          <button
-            onClick={() => user.isLoggedIn ? onBook(seatCount) : navigate('/login')}
-            className={`px-4 py-2 bg-green-500 text-white rounded-md text-sm font-medium hover:bg-green-700 transition ${!user.isLoggedIn && 'opacity-50 cursor-not-allowed'}`}
-          >
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"/>
+          <button onClick={() => user.isLoggedIn ? onBook(seatCount) : navigate('/login')}
+            className={`px-4 py-2 bg-green-500 text-white rounded-md text-sm font-medium hover:bg-green-700 transition ${!user.isLoggedIn && 'opacity-50 cursor-not-allowed'}`}>
             Book
           </button>
         </div>
 
-        <button
-          onClick={handleShowBookedSeats}
-          className='w-full max-w-sm mx-auto py-2 bg-indigo-500 text-white text-sm font-semibold rounded-md hover:bg-indigo-600 transition'
-        >
+        <button onClick={handleShowBookedSeats}
+          className='w-full max-w-sm mx-auto py-2 bg-indigo-500 text-white text-sm font-semibold rounded-md hover:bg-indigo-600 transition'>
           View My Booked Seats
         </button>
       </div>

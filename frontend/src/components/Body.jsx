@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SeatLayout from './SeatLayout';
 import BookingPanel from './BookingPanel';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,10 +6,19 @@ import { addUserBookedSeats, setCurrentSessionSeats, updateBookedSeats } from '.
 import { addBookedSeats, setBookedSeats } from '../utils/bookedSeatsSlice';
 import { API_URL } from '../utils/constants';
 import AdminPanel from './AdminPanel';
+import PromptBox from './PromptBox';
 
 const Body = () => {
   const totalSeats = 80;
   const seatsPerRow = 7;
+
+  const [promptMsg, setPromptMsg] = useState("");
+
+  const showPrompt = (msg) => {
+    setPromptMsg(msg);
+    setTimeout(() => setPromptMsg(""), 3000);
+  };
+
 
   const user = useSelector((state) => state.user);
   const allBookedSeats = useSelector((state) => state.allBookedSeats);
@@ -53,12 +62,13 @@ const Body = () => {
   };
 
   const handleBook = async (count) => {
-    if (!user.isLoggedIn) return alert('Please login to book seats');
-    if (count < 1 || count > 7) return alert('You can book between 1 to 7 seats');
+    if (!user.isLoggedIn) return showPrompt('Please login to book seats');
+    if (count < 1 || count > 7) return showPrompt('You can book up to 7 seats at a time.');
+
   
     const seatMap = getAllSeatIds();
     const available = seatMap.filter(seat => !allBookedSeats.includes(seat));
-    if (available.length < count) return alert('Not enough seats available!');
+    if (available.length < count) return showPrompt('Not enough seats available!');
   
     let selected = [];
   
@@ -104,17 +114,17 @@ const Body = () => {
         dispatch(addUserBookedSeats(selected));
         dispatch(addBookedSeats(selected));
       } else {
-        alert(data.error || "Booking failed");
+        showPrompt(data.error || "Booking failed");
       }
     } catch (err) {
-      console.error(err);
-      alert("Server error while booking");
+      showPrompt("Server error while booking");
     }
   };
   
 
   return (
     <div className='w-11/12 my-6 max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-4 justify-between'>
+      {promptMsg && <PromptBox message={promptMsg} onClose={() => setPromptMsg("")} />}
       <SeatLayout totalSeats={totalSeats} seatsPerRow={seatsPerRow} />
       {user.email === 'admin@traintix.com' ? (
         <AdminPanel/> 
