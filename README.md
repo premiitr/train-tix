@@ -98,8 +98,5 @@ CREATE TABLE users (
 
 ```bash
 Email: admin@traintix.com
-Password: Prem@2030
+Password: any
 ```
-
----
-
