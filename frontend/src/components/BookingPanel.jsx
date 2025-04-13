@@ -116,11 +116,12 @@ const BookingPanel = ({ onBook }) => {
 
         {/* Total Price Box */}
         {currseats.length > 0 && (
-          <div className="w-[385px] mx-auto p-2 bg-green-100 gap-4 flex justify-center rounded-md">
-            <p className="text-lg font-semibold">Total Price : </p>
-            <p className="text-lg font-bold text-green-600">{currseats.length * seatPrice} ₹</p>
+          <div className="w-full max-w-sm mx-auto p-2 bg-green-100 gap-2 flex flex-col sm:flex-row justify-center items-center rounded-md">
+            <p className="text-base sm:text-lg font-semibold">Total Price :</p>
+            <p className="text-base sm:text-lg font-bold text-green-600">{currseats.length * seatPrice} ₹</p>
           </div>
         )}
+
       </div>
 
       {/* 🔽 Cancel Modal */}
