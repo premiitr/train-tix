@@ -66,26 +66,33 @@ const AdminPanel = () => {
       <div className="w-10/12 flex flex-col justify-center items-center gap-6">
         {promptMsg && <PromptBox message={promptMsg} onClose={() => setPromptMsg('')} />}
         <h2 className="text-3xl font-bold text-indigo-700">🛠️ Admin Panel</h2>
-        <div className="w-full flex flex-col gap-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-600">Total Seats:</label>
+        <div className="w-full flex flex-col gap-3">
+          <div className="flex w-full gap-2 max-w-sm mx-auto items-center">
+            <label className="text-md font-medium text-gray-700 w-32">Total Seats</label>
             <input type="number" value={totalSeatsInput} onChange={(e) => setTotalSeatsInput(e.target.value)}
-              className="w-full border px-3 py-2 rounded-md"/>
+              className="flex-1 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
           </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-600">Seats Per Row:</label>
+
+          <div className="flex w-full gap-2 max-w-sm mx-auto items-center">
+            <label className="text-md font-medium text-gray-700 w-32">Seats/Row</label>
             <input type="number" value={seatsPerRowInput} onChange={(e) => setSeatsPerRowInput(e.target.value)}
-              className="w-full border px-3 py-2 rounded-md"/>
+              className="flex-1 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
           </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-600">Seat Price (₹):</label>
+
+          <div className="flex w-full gap-2 max-w-sm mx-auto items-center">
+            <label className="text-md font-medium text-gray-700 w-32">Price (₹)</label>
             <input type="number" value={seatPriceInput} onChange={(e) => setSeatPriceInput(e.target.value)}
-              className="w-full border px-3 py-2 rounded-md"/>
+              className="flex-1 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"/>
           </div>
-          <button onClick={handleConfigUpdate} className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">
-            ✅ Update Configuration
-          </button>
+
+          <div className="flex w-full max-w-sm mx-auto">
+            <button onClick={handleConfigUpdate}
+              className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 transition">
+              ✅ Update Configuration
+            </button>
+          </div>
         </div>
+
 
         <p className="text-center text-gray-600 text-sm">
           You can manage system-wide bookings here. Use the button below to reset all booked seats.
