@@ -115,10 +115,10 @@ const BookingPanel = ({ onBook }) => {
         </button>
 
         {/* Total Price Box */}
-        {userbookedseats.length > 0 && (
+        {currseats.length > 0 && (
           <div className="w-[385px] mx-auto p-2 bg-green-100 gap-4 flex justify-center rounded-md">
             <p className="text-lg font-semibold">Total Price : </p>
-            <p className="text-lg font-bold text-green-600">{userbookedseats.length * seatPrice} ₹</p>
+            <p className="text-lg font-bold text-green-600">{currseats.length * seatPrice} ₹</p>
           </div>
         )}
       </div>

@@ -52,7 +52,7 @@ const AdminPanel = () => {
         dispatch(updateBookedSeats([]));
         dispatch(setCurrentSessionSeats([]));
         setShowConfirm(false);
-        showPrompt('error:✅ All bookings have been successfully reset!');
+        showPrompt('success:✅ All bookings have been successfully reset!');
       } else {
         showPrompt(`error:${data.error}`);
       }
