@@ -33,17 +33,17 @@ const Header = () => {
             <Link to="/" className="px-3 py-2 text-xl rounded-md hover:bg-gray-100 transition">
               Home
             </Link>
+            <div>
+            {user.name && <span className="px-3 py-2 text-gray-700 text-xl rounded-md">{getFirstName(user.name)}</span>}
+            </div>
             {!user.isLoggedIn ? (
               <Link to="/login" className="px-3 py-2 text-xl rounded-md hover:bg-gray-100 transition">
                 Login
               </Link>
             ) : (
-              <>
-                {user.name && <span className="px-3 py-2 text-gray-700 text-lg">{getFirstName(user.name)}</span>}
-                <button onClick={handleLogout} className="px-3 py-2 rounded-md hover:bg-gray-100 transition text-lg">
-                  Logout
-                </button>
-              </>
+              <button onClick={handleLogout} className="px-3 py-2 rounded-md hover:bg-gray-100 transition text-lg">
+                Logout
+              </button>
             )}
           </nav>
 
@@ -66,14 +66,14 @@ const Header = () => {
                 Login
               </Link>
             ) : (
-              <>
+              <div>
                 <div className="px-4 py-2 text-gray-700">👤 {getFirstName(user.name)}</div>
                 <button
                   onClick={() => {handleLogout(); setMobileOpen(false);}}
                   className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">
                   Logout
                 </button>
-              </>
+              </div>
             )}
           </div>
         )}
