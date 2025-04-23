@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
-import { removeUserBookedSeats, setCurrentSessionSeats } from '../utils/userSlice';
-import { removeBookedSeats } from '../utils/bookedSeatsSlice';
+import { removeUserBookedSeats, setCurrentSessionSeats } from '../redux/userSlice';
+import { removeBookedSeats } from '../redux/bookedSeatsSlice';
 import PromptBox from './PromptBox';
 
 const BookingPanel = ({ onBook }) => {

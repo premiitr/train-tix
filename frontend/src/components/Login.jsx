@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { API_URL } from '../utils/constants';
 import { useDispatch } from 'react-redux';
-import { login } from '../utils/userSlice';
+import { login } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import PromptBox from './PromptBox';
 

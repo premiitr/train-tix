@@ -7,7 +7,7 @@ import Body from './components/Body';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import Error from './components/Error';
 import Login from './components/Login';
-import appStore from './utils/appStore';
+import appStore from './redux/appStore';
 import { Provider } from 'react-redux';
 
 const Applayout = ()=> {

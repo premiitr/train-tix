@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetBookedSeats } from '../utils/bookedSeatsSlice';
-import { updateBookedSeats, setCurrentSessionSeats } from '../utils/userSlice';
+import { resetBookedSeats } from '../redux/bookedSeatsSlice';
+import { updateBookedSeats, setCurrentSessionSeats } from '../redux/userSlice';
 import { API_URL } from '../utils/constants';
-import { updateSeatConfig } from '../utils/configSeatsSlice';
+import { updateSeatConfig } from '../redux/configSeatsSlice';
 import PromptBox from './PromptBox';
 
 const AdminPanel = () => {
