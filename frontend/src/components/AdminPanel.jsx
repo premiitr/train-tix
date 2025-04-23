@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetBookedSeats } from '../redux/bookedSeatsSlice';
-import { updateBookedSeats, setCurrentSessionSeats } from '../redux/userSlice';
+import { updateBookedSeats} from '../redux/userSlice';
 import { API_URL } from '../utils/constants';
 import { updateSeatConfig } from '../redux/configSeatsSlice';
 import PromptBox from './PromptBox';
 
-const AdminPanel = () => {
+const AdminPanel = ({setcurrSeats}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const seatConfig = useSelector((state) => state.seatConfig);
@@ -50,7 +50,7 @@ const AdminPanel = () => {
       if (res.ok) {
         dispatch(resetBookedSeats());
         dispatch(updateBookedSeats([]));
-        dispatch(setCurrentSessionSeats([]));
+        setcurrSeats([]);
         setShowConfirm(false);
         showPrompt('success:✅ All bookings have been successfully reset!');
       } else {

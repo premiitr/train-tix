@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-const SeatLayout = ({ totalSeats, seatsPerRow}) => {
+const SeatLayout = ({ totalSeats, seatsPerRow, currSeats}) => {
   const user = useSelector((state) => state.user);
   const allBookedSeats = useSelector((state)=>state.allBookedSeats);
 
@@ -11,7 +11,7 @@ const SeatLayout = ({ totalSeats, seatsPerRow}) => {
   const totalAvailable = totalSeats - totalBooked;
 
   const getSeatColor = (seatId) => {
-    const isBookedByUser = user.isLoggedIn && (user.bookedSeats.includes(seatId) || user.currentSessionSeats.includes(seatId));
+    const isBookedByUser = user.isLoggedIn && (user.bookedSeats.includes(seatId) || currSeats.includes(seatId));
     const isBookedByOthers = allBookedSeats.includes(seatId) && !isBookedByUser;
 
     if (!user.isLoggedIn) {

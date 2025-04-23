@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
-import { removeUserBookedSeats, setCurrentSessionSeats } from '../redux/userSlice';
+import { removeUserBookedSeats} from '../redux/userSlice';
 import { removeBookedSeats } from '../redux/bookedSeatsSlice';
 import PromptBox from './PromptBox';
 
-const BookingPanel = ({ onBook }) => {
+const BookingPanel = ({ onBook, currSeats, setcurrSeats}) => {
   const [seatCount, setSeatCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [selectedToCancel, setSelectedToCancel] = useState([]);
@@ -24,7 +24,7 @@ const BookingPanel = ({ onBook }) => {
 
   const user = useSelector((state) => state.user);
   const seatConfig = useSelector((state) => state.seatConfig);
-  const currseats = user.currentSessionSeats;
+  const currseats = currSeats //user.currentSessionSeats;
   const userbookedseats = user.bookedSeats;
 
   // Define the price per seat (this can be adjusted or fetched from a config)
@@ -56,7 +56,8 @@ const BookingPanel = ({ onBook }) => {
       if (res.ok) {
         dispatch(removeUserBookedSeats(seatsToCancel));
         dispatch(removeBookedSeats(seatsToCancel));
-        dispatch(setCurrentSessionSeats([]));
+        // dispatch(setCurrentSessionSeats([]));
+        setcurrSeats([]);
         setSelectedToCancel([]);
         setShowModal(false);
       } else {

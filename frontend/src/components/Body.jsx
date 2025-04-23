@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SeatLayout from './SeatLayout';
 import BookingPanel from './BookingPanel';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserBookedSeats, setCurrentSessionSeats, updateBookedSeats } from '../redux/userSlice';
+import { addUserBookedSeats, updateBookedSeats } from '../redux/userSlice';
 import { addBookedSeats, setBookedSeats } from '../redux/bookedSeatsSlice';
 import { API_URL } from '../utils/constants';
 import AdminPanel from './AdminPanel';
@@ -11,6 +11,7 @@ import PromptBox from './PromptBox';
 const Body = () => {
   const { totalSeats, seatsPerRow } = useSelector((state) => state.seatConfig);
   const [promptMsg, setPromptMsg] = useState("");
+  const [currSeats, setcurrSeats] = useState([]);
 
   const showPrompt = (msg) => {
     setPromptMsg(msg);
@@ -183,10 +184,10 @@ const Body = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.user_id, seats: selected })
       });
-  
+
       const data = await res.json();
       if (res.ok) {
-        dispatch(setCurrentSessionSeats(selected));
+        setcurrSeats(selected);
         dispatch(addUserBookedSeats(selected));
         dispatch(addBookedSeats(selected));
       } else {
@@ -201,11 +202,11 @@ const Body = () => {
   return (
     <div className='w-11/12 my-6 max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-4 justify-between'>
       {promptMsg && <PromptBox message={promptMsg} onClose={() => setPromptMsg("")} />}
-      <SeatLayout totalSeats={totalSeats} seatsPerRow={seatsPerRow} />
+      <SeatLayout totalSeats={totalSeats} seatsPerRow={seatsPerRow} currSeats={currSeats} />
       {user.email === 'admin@traintix.com' ? (
-        <AdminPanel/> 
+        <AdminPanel setcurrSeats={setcurrSeats}/> 
       ) : (
-        <BookingPanel onBook={handleBook} />
+        <BookingPanel onBook={handleBook} currSeats={currSeats} setcurrSeats={setcurrSeats}/>
       )}
     </div>
   );

@@ -7,7 +7,6 @@ const userSlice = createSlice({
     email: '',
     user_id: null,
     bookedSeats: [], // permanent bookings
-    currentSessionSeats: [], // 🟡 new
     isLoggedIn: false,
   },
   reducers: {
@@ -24,7 +23,6 @@ const userSlice = createSlice({
       state.email = '';
       state.user_id = null;
       state.bookedSeats = [];
-      state.currentSessionSeats = [];
       state.isLoggedIn = false;
     },
 
@@ -40,13 +38,9 @@ const userSlice = createSlice({
     updateBookedSeats: (state, action) => {
       state.bookedSeats = action.payload;
     },
-
-    setCurrentSessionSeats: (state, action) => {
-      state.currentSessionSeats = action.payload;
-    },
   }
 });
 
-export const {login,logout,addUserBookedSeats,removeUserBookedSeats,updateBookedSeats,setCurrentSessionSeats} = userSlice.actions;
+export const {login,logout,addUserBookedSeats,removeUserBookedSeats,updateBookedSeats} = userSlice.actions;
 export default userSlice.reducer;
 
