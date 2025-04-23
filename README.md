@@ -100,22 +100,28 @@ CREATE TABLE users (
 ---
 ## 📁 File Structure
 ```bash
-|traintix
+traintix/
 │
-├── /frontend                    # Frontend React app
-│   ├── /public                # Public assets (index.html, etc.)
-│   ├── /src                   # React source code
-│       ├── index.js               # Entry point for the app
-│   ├── package.json           # Frontend dependencies
+├── backend/                       # Node.js + Express backend
+│   ├── controllers/               # API logic (register, login, booking, reset, etc.)
+│   ├── models/                    # PostgreSQL queries and database logic
+│   ├── routes/                    # Express route definitions
+│   ├── db.js                      # Database connection using `pg`
+│   ├── server.js                  # Express server setup
+│   └── package.json               # Backend dependencies and scripts
 │
-├── /backend                   # Backend Node.js + Express app
-│   ├── /controllers           # API endpoint controllers
-│   ├── /models                # Database models
-│   ├── /routes                # API route definitions
-│   ├── server.js              # Main server file
-│   ├── package.json           # Backend dependencies
+├── frontend/                      # React-based client application
+│   ├── public/                    # Static HTML and favicon
+│   ├── src/                       # Source files
+│   │   ├── components/            # UI components (SeatLayout, BookingPanel, Header, etc.)
+│   │   ├── redux/                 # Redux slices and store config
+│   │   ├── utils/                 # Constants and helper functions
+│   │   ├── index.js               # React app entry point
+│   │   └── index.css              # Global styles
+│   └── package.json               # Frontend dependencies and scripts
 │
-└── README.md                  # This file
+└── README.md                      # Project documentation
+
 ```
 ---
 
