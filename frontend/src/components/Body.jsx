@@ -61,82 +61,82 @@ const Body = () => {
   };
 
   const getClosestNSeats = (availableSeats, n) => {
-    if (availableSeats.length < n) return [];
-  
-    const seatToCoords = (seatId) => {
-      const row = parseInt(seatId.match(/\d+/)[0]);
-      const col = seatId.charCodeAt(seatId.length - 1) - 65;
-      return { seatId, row, col };
-    };
-  
-    const coords = availableSeats.map(seatToCoords);
-  
-    // Group by row
-    const rowMap = {};
-    for (let seat of coords) {
-      if (!rowMap[seat.row]) rowMap[seat.row] = [];
-      rowMap[seat.row].push(seat);
-    }
-  
-    const sortedRows = Object.keys(rowMap).map(Number).sort((a, b) => a - b);
-  
-    let bestCombo = [];
-    let bestRowSpan = Infinity;
-    let bestColSpan = Infinity;
-    let bestDistance = Infinity;
-  
-    for (let i = 0; i < sortedRows.length; i++) {
-      const centerRow = sortedRows[i];
-      let remaining = n;
-      let selectedSeats = [];
-  
-      const initial = rowMap[centerRow].sort((a, b) => a.col - b.col);
-      selectedSeats.push(...initial.slice(0, Math.min(remaining, initial.length)));
-      remaining = n - selectedSeats.length;
-  
-      const remainingRows = sortedRows.filter(r => r !== centerRow);
-      const exactMatchRows = remainingRows.filter(r => rowMap[r].length === remaining);
-      const fallbackRows = remainingRows.filter(r => rowMap[r].length !== remaining);
-  
-      const prioritizedRows = [...exactMatchRows, ...fallbackRows].sort(
-        (a, b) => Math.abs(a - centerRow) - Math.abs(b - centerRow)
-      );
-  
-      for (let r of prioritizedRows) {
-        if (remaining <= 0) break;
-        const seats = rowMap[r].sort((a, b) => a.col - b.col);
-        const pick = seats.slice(0, remaining);
-        selectedSeats.push(...pick);
-        remaining -= pick.length;
-      }
-  
-      if (selectedSeats.length < n) continue;
-  
-      const rowSet = new Set(selectedSeats.map(s => s.row));
-      const colVals = selectedSeats.map(s => s.col);
-      const minCol = Math.min(...colVals);
-      const maxCol = Math.max(...colVals);
-      const rowSpan = Math.max(...rowSet) - Math.min(...rowSet);
-      const colSpan = maxCol - minCol;
-  
-      const distance = selectedSeats.reduce((acc, s1) =>
-        acc + selectedSeats.reduce((inner, s2) =>
-          inner + Math.abs(s1.row - s2.row) + Math.abs(s1.col - s2.col), 0), 0);
-  
-      if (
-        rowSpan < bestRowSpan ||
-        (rowSpan === bestRowSpan && colSpan < bestColSpan) ||
-        (rowSpan === bestRowSpan && colSpan === bestColSpan && distance < bestDistance)
-      ) {
-        bestCombo = selectedSeats.map(s => s.seatId);
-        bestRowSpan = rowSpan;
-        bestColSpan = colSpan;
-        bestDistance = distance;
-      }
-    }
-  
-    return bestCombo;
+  if (availableSeats.length < n) return [];
+
+  const seatToCoords = (seatId) => {
+    const row = parseInt(seatId.match(/\d+/)[0]);
+    const col = seatId.charCodeAt(seatId.length - 1) - 65;
+    return { seatId, row, col };
   };
+
+  const coords = availableSeats.map(seatToCoords);
+
+  // Group by row
+  const rowMap = {};
+  for (const seat of coords) {
+    if (!rowMap[seat.row]) rowMap[seat.row] = [];
+    rowMap[seat.row].push(seat);
+  }
+
+  const sortedRows = Object.keys(rowMap).map(Number).sort((a, b) => a - b);
+
+  let bestCombo = [];
+  let bestMetrics = { rowSpan: Infinity, colSpan: Infinity, distance: Infinity };
+
+  for (let centerRow of sortedRows) {
+    const baseRowSeats = rowMap[centerRow].sort((a, b) => a.col - b.col);
+    const maxFromBase = Math.min(baseRowSeats.length, n);
+
+    for (let countFromBase = maxFromBase; countFromBase >= 1; countFromBase--) {
+      const selected = [...baseRowSeats.slice(0, countFromBase)];
+      let remaining = n - countFromBase;
+
+      // Now find a row (preferably) with exactly `remaining` seats
+      const otherRows = sortedRows.filter(r => r !== centerRow);
+      let additional = [];
+
+      const exactMatchRow = otherRows
+        .filter(r => rowMap[r].length === remaining)
+        .sort((a, b) => Math.abs(a - centerRow) - Math.abs(b - centerRow))[0];
+
+      if (exactMatchRow !== undefined) {
+        additional = rowMap[exactMatchRow].slice(0, remaining);
+      } else {
+        // Fallback: choose closest rows with enough total seats
+        for (let row of otherRows.sort((a, b) => Math.abs(a - centerRow) - Math.abs(b - centerRow))) {
+          if (remaining <= 0) break;
+          const take = rowMap[row].slice(0, remaining);
+          additional.push(...take);
+          remaining -= take.length;
+        }
+      }
+
+      if (selected.length + additional.length < n) continue;
+
+      const combo = [...selected, ...additional];
+      const rowSet = new Set(combo.map(s => s.row));
+      const colVals = combo.map(s => s.col);
+      const rowSpan = Math.max(...rowSet) - Math.min(...rowSet);
+      const colSpan = Math.max(...colVals) - Math.min(...colVals);
+      const distance = combo.reduce((acc, s1) =>
+        acc + combo.reduce((inner, s2) =>
+          inner + Math.abs(s1.row - s2.row) + Math.abs(s1.col - s2.col), 0), 0);
+
+      const isBetter =
+        rowSpan < bestMetrics.rowSpan ||
+        (rowSpan === bestMetrics.rowSpan && colSpan < bestMetrics.colSpan) ||
+        (rowSpan === bestMetrics.rowSpan && colSpan === bestMetrics.colSpan && distance < bestMetrics.distance);
+
+      if (isBetter) {
+        bestCombo = combo.map(s => s.seatId);
+        bestMetrics = { rowSpan, colSpan, distance };
+      }
+    }
+  }
+
+  return bestCombo;
+};
+
   
   const handleBook = async (count) => {
     if (!user.isLoggedIn) return showPrompt('Please login to book seats');
